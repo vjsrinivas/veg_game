@@ -8,3 +8,16 @@
     margin-right: auto;
     margin-left: auto;
 }
+
+#action_stage{
+	background-color: blue;
+	width: 400px;
+	height:	100px;
+	position: absolute;
+	top: 0;
+	left : 0;
+}
+
+canvas{
+	border: 1px solid black;
+}
