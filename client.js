@@ -5,7 +5,8 @@ var stats = JSON.parse(stats_raw);
 function init() {
   stage = new createjs.Stage("demoCanvas");
   init_action_stage(stage);
-  stage.update();
+  init_enemy_stage(stage);
+  //stage.update();
 }
 
 function action_stage_visibility(event){
@@ -13,8 +14,26 @@ function action_stage_visibility(event){
 }
 
 function init_action_stage(stage){
-  var action_stage = new createjs.Shape();
-  action_stage.graphics.beginFill("red").drawRect(20,20,300,75);
-  stage.addChild(action_stage);
-  stage.addEventListener("click", action_stage_visibility)
+  var img = new Image();
+  img.src = "./img/action_stage_bg.png";
+  img.onload = handleImageLoad;
+}
+
+function handleImageLoad(event){
+  var image = event.target;
+  var bitmap = new createjs.Bitmap(image);
+  stage.addChild(bitmap);
+  stage.update();
+}
+
+function init_enemy_stage(stage){
+  var img = new Image();
+  img.src = "./img/action_stage_bg.png";
+  img.onload = handleImageLoad;
+}
+
+function init_action_drop(stage){
+  var img = new Image();
+  img.src = "./img/action_stage_bg.png";
+  img.onload = handleImageLoad;
 }
