@@ -6,7 +6,8 @@ function init() {
   stage = new createjs.Stage("demoCanvas");
   init_action_stage(stage);
   init_enemy_stage(stage);
-  //stage.update();
+  init_action_drop(stage);
+  init_action_move(stage, "fafa");
 }
 
 function action_stage_visibility(event){
@@ -16,24 +17,66 @@ function action_stage_visibility(event){
 function init_action_stage(stage){
   var img = new Image();
   img.src = "./img/action_stage_bg.png";
-  img.onload = handleImageLoad;
-}
-
-function handleImageLoad(event){
-  var image = event.target;
-  var bitmap = new createjs.Bitmap(image);
-  stage.addChild(bitmap);
-  stage.update();
+  var bitmap = new createjs.Bitmap(img);
+  img.onload = function() {
+      var image = event.target;
+      var bitmap = new createjs.Bitmap(image);
+      bitmap.x = 30;
+      bitmap.y = 30;
+      stage.addChild(bitmap);
+      stage.update();
+  };
 }
 
 function init_enemy_stage(stage){
   var img = new Image();
   img.src = "./img/action_stage_bg.png";
-  img.onload = handleImageLoad;
+  img.onload = function() {
+      var image = event.target;
+      var bitmap = new createjs.Bitmap(image);
+      bitmap.x = 670;
+      bitmap.y = 30;
+      bitmap.alpha = 0.5;
+      stage.addChild(bitmap);
+      stage.update();
+  };
 }
 
 function init_action_drop(stage){
   var img = new Image();
   img.src = "./img/action_stage_bg.png";
-  img.onload = handleImageLoad;
+  img.onload = function() {
+      var image = event.target;
+      var bitmap = new createjs.Bitmap(image);
+      bitmap.x = 350;
+      bitmap.y = 420;
+      stage.addChild(bitmap);
+      stage.update();
+  };
+}
+
+function init_action_move(stage, move){
+  var img = new Image();
+  img.src = "./img/action_icon.png";
+  //var dragger = new createjs.Container();
+  img.onload = function() {
+      var image = event.target;
+      var bitmap = new createjs.Bitmap(image);
+      bitmap.x = 250;
+      bitmap.y = 250;
+      stage.add(bitmap);
+      stage.update();
+      /*dragger.x = 350
+      dragger.y = 420;
+      dragger.addChild(bitmap);
+      stage.addChild(dragger);
+      stage.update();*/
+  };
+
+  /*dragger.on("pressmove", function(evt){
+    evt.currentTarget.x = evt.stageX;
+    evt.currentTarget.y = evt.stageY;
+    stage.update();
+  })*/
+
 }
