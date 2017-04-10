@@ -7,7 +7,7 @@ function init() {
   init_action_stage(stage);
   init_enemy_stage(stage);
   init_action_drop(stage);
-  init_action_move(stage, "fafa");
+  init_action_move(stage, stats["player"]["attack"]);
 }
 
 function action_stage_visibility(event){
@@ -58,25 +58,25 @@ function init_action_drop(stage){
 function init_action_move(stage, move){
   var img = new Image();
   img.src = "./img/action_icon.png";
-  //var dragger = new createjs.Container();
+  var dragger = new createjs.Container();
   img.onload = function() {
       var image = event.target;
       var bitmap = new createjs.Bitmap(image);
-      bitmap.x = 250;
-      bitmap.y = 250;
-      stage.add(bitmap);
-      stage.update();
-      /*dragger.x = 350
+      //bitmap.x = 365;
+      //bitmap.y = 420;
+      //stage.addChild(bitmap);
+      //stage.update();
+      dragger.x = 350
       dragger.y = 420;
       dragger.addChild(bitmap);
       stage.addChild(dragger);
-      stage.update();*/
+      stage.update();
   };
 
-  /*dragger.on("pressmove", function(evt){
+  dragger.on("pressmove", function(evt){
     evt.currentTarget.x = evt.stageX;
     evt.currentTarget.y = evt.stageY;
     stage.update();
-  })*/
+  })
 
 }
