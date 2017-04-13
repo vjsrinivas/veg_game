@@ -11,7 +11,7 @@ function init() {
   init_enemy_stage(stage);
   init_action_drop(stage);
   for(i=0; i<3; i++){
-      init_action_move(stage, stats["player"]["attack"][i], 365+(95*i+1), 420);
+      init_action_move(stage, stats["player"]["attack"][i], 365+(95*i+1), 420, "action_icon_"+(i+1));
   }
 }
 
@@ -74,9 +74,9 @@ function init_action_drop(stage){
   };
 }
 
-function init_action_move(stage, move, x, y){
+function init_action_move(stage, move, x, y, img_src){
   var img = new Image();
-  img.src = "./img/action_icon.png";
+  img.src = "./img/"+img_src+".png";
   var dragger = new createjs.Container();
   img.onload = function() {
       var image = event.target;
@@ -92,11 +92,36 @@ function init_action_move(stage, move, x, y){
       stage.update();
   };
 
-  dragger.on("pressmove", function(evt){
-    evt.currentTarget.x = evt.stageX;
-    evt.currentTarget.y = evt.stageY;
+  dragger.on("pressmove", handleDrag)
+}
+
+function handleDrag(event){
+    var neighbour, // what we want to snap to
+        dist, // The current distance to our snap partner
+        snapDistance=20; // How close to be to snap
+    var diffX = Math.abs(event.stageX - 50);
+    var diffY = Math.abs(event.stageY - 50); 
+    var d = Math.sqrt(diffX*diffX + diffY*diffY);        
+    
+    // If the current point is closeEnough and the closest (so far)
+    // Then choose it to snap to.
+    var closest = (d<snapDistance && (dist == null || d < dist));
+    if (closest) {
+          neighbour = p; 
+        dist = d;
+    }
+
+    if (neighbour) {
+        s.x = neighbour.x;
+        s.y = neighbour.y;
+        
+    // Otherwise snap to the mouse
+    } else {
+        s.x = event.stageX;
+        s.y = event.stageY;
+    }
+
     stage.update();
-  })
 }
 
   /////
@@ -106,6 +131,9 @@ function init_characters(para_hp, moves){
   return character;
 }
 
+function init_sprite(stage){
+
+}
 
 /*function init_playbutton(){
   var helper = new createjs.ButtonHelper(myInstance, "out", "over", "down", false, myInstance, "hit");
