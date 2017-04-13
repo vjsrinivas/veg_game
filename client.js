@@ -92,10 +92,7 @@ function init_action_move(stage, move, x, y, img_src){
       stage.update();
   };
 
-  dragger.on("pressmove", handleDrag)
-}
-
-function handleDrag(event){
+  dragger.on("pressmove", function(event){
     var neighbour, // what we want to snap to
         dist, // The current distance to our snap partner
         snapDistance=20; // How close to be to snap
@@ -112,16 +109,17 @@ function handleDrag(event){
     }
 
     if (neighbour) {
-        s.x = neighbour.x;
-        s.y = neighbour.y;
+        dragger.x = neighbour.x;
+        dragger.y = neighbour.y;
         
     // Otherwise snap to the mouse
     } else {
-        s.x = event.stageX;
-        s.y = event.stageY;
+        dragger.x = event.stageX;
+        dragger.y = event.stageY;
     }
 
     stage.update();
+  })
 }
 
   /////
