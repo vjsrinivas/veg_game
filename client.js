@@ -3,6 +3,7 @@ var stats_raw = `{"player":{"attack":{"carrot":{"carrot_launch":{"max_dmg":50,"m
 var stats = JSON.parse(stats_raw);
 var current_moves = []
 var carrot = init_characters(100, stats["player"]["attack"]["carrot"]);
+var snappoints = []
 
 function init() {
   stage = new createjs.Stage("demoCanvas");
@@ -45,6 +46,13 @@ function init_action_stage(stage){
       stage.addChild(bitmap);
       stage.update();
   };
+
+  for(var i=0; i<1; i++){
+    var p = new createjs.Container();
+    p.x = 30;
+    p.y = 30;
+    snappoints.push(p);
+  }
 }
 
 function init_enemy_stage(stage){
@@ -96,6 +104,10 @@ function init_action_move(stage, move, x, y, img_src){
     var neighbour, // what we want to snap to
         dist, // The current distance to our snap partner
         snapDistance=20; // How close to be to snap
+
+    for(var i=0, l=snappoints.length; i<1; i++)
+    {
+    var p = snappoints[l];
     var diffX = Math.abs(event.stageX - 50);
     var diffY = Math.abs(event.stageY - 50); 
     var d = Math.sqrt(diffX*diffX + diffY*diffY);        
@@ -107,6 +119,7 @@ function init_action_move(stage, move, x, y, img_src){
           neighbour = p; 
         dist = d;
     }
+  }
 
     if (neighbour) {
         dragger.x = neighbour.x;
