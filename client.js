@@ -17,6 +17,7 @@ function init() {
   }
   init_sprite(stage, "carrot_character", 150, 200);
   init_sprite(stage, "cupcake", 700,200);
+  hp_display(stage, 100);
 }
 
 function init_background(stage){
@@ -168,6 +169,14 @@ function event_display(stage, text_to_show){
   text.y = 150;
 }
 
+function hp_display(stage, hp_num){
+  var text = new createjs.Text("Hello World", "20px Arial", "#ff7700");
+ text.x = 100;
+ text.textBaseline = "alphabetic";
+ stage.addChild(text);
+ stage.update();
+}
+
 function run_moves(){
 
 }
@@ -176,5 +185,5 @@ function run_moves(){
 
 
 var clickHandler = function(){
-  alert('clicked!');
+  alert('cliafafcked!');
 };
