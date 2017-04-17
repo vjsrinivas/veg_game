@@ -20,4 +20,13 @@
 
 canvas{
 	border: 1px solid black;
+	z-index: 1;
+}
+
+#execute{
+    z-index: 20000;
+    position: absolute;
+    top: 100;
+    left: 640;
+	
 }

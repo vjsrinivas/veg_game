@@ -3,6 +3,7 @@ var stats_raw = `{"player":{"attack":{"carrot":{"carrot_launch":{"max_dmg":50,"m
 var stats = JSON.parse(stats_raw);
 var current_moves = []
 var carrot = init_characters(100, stats["player"]["attack"]["carrot"]);
+var cupcake = init_characters(100,stats["enemy"]["attack"]);
 var snappoints = []
 
 function init() {
@@ -14,9 +15,15 @@ function init() {
   for(i=0; i<3; i++){
       init_action_move(stage, stats["player"]["attack"][i], 365+(95*i+1), 420, "action_icon_"+(i+1));
   }
+  init_sprite(stage, "carrot_character");
+  init_sprite(stage, "cupcake");
 }
 
 function init_background(stage){
+  var elements = document.getElementsByTagName('input'); // All divs
+  for(var i = 0; i<elements.length; i++){
+    elements[i].onclick = clickHandler;
+  }
   var img = new Image();
   img.src = "./img/background.png";
   var bitmap = new createjs.Bitmap(img);
@@ -142,14 +149,32 @@ function init_characters(para_hp, moves){
   return character;
 }
 
-function init_sprite(stage){
+function init_sprite(stage, filename){
+  var img = new Image();
+  img.src = "./img/"+ filename +".png";
+  img.onload = function() {
+      var image = event.target;
+      var bitmap = new createjs.Bitmap(image);
+      bitmap.x = 150;
+      bitmap.y = 200;
+      stage.addChild(bitmap);
+      stage.update();
+  };
+}
+
+function event_display(stage, text_to_show){
+  var text = new createjs.Text(text_to_show, "20px Arial", "#000");
+  text.x = 500;
+  text.y = 150;
+}
+
+function run_moves(){
 
 }
 
-/*function init_playbutton(){
-  var helper = new createjs.ButtonHelper(myInstance, "out", "over", "down", false, myInstance, "hit");
-  myInstance.addEventListener("click", handleClick);
-  function handleClick(event) {
-     alert("afaf");
- }
-}*/
+/////////////
+
+
+var clickHandler = function(){
+  alert('clicked!');
+};
