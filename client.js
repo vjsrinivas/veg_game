@@ -15,8 +15,8 @@ function init() {
   for(i=0; i<3; i++){
       init_action_move(stage, stats["player"]["attack"][i], 365+(95*i+1), 420, "action_icon_"+(i+1));
   }
-  init_sprite(stage, "carrot_character");
-  init_sprite(stage, "cupcake");
+  init_sprite(stage, "carrot_character", 150, 200);
+  init_sprite(stage, "cupcake", 700,200);
 }
 
 function init_background(stage){
@@ -149,14 +149,14 @@ function init_characters(para_hp, moves){
   return character;
 }
 
-function init_sprite(stage, filename){
+function init_sprite(stage, filename,x,y){
   var img = new Image();
   img.src = "./img/"+ filename +".png";
   img.onload = function() {
       var image = event.target;
       var bitmap = new createjs.Bitmap(image);
-      bitmap.x = 150;
-      bitmap.y = 200;
+      bitmap.x = x;
+      bitmap.y = y;
       stage.addChild(bitmap);
       stage.update();
   };
