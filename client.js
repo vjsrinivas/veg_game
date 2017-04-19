@@ -144,6 +144,8 @@ var clickHandler = function(){
    {
 	alert("Miss!");}
 
+   whowon();
+
    var hit_from_enemy = Math.floor((Math.random() * 2) + 1);
 
    if(hit_from_enemy == 2){
@@ -153,13 +155,19 @@ var clickHandler = function(){
    else{
 	alert("Your enemy missed!");
 }
+	whowon();
+};
 
-	if(carrot.hp <= 0)
+function whowon(){
+
+if(carrot.hp <= 0)
 	{
 		alert("You lost!");
+		document.getElementById("execute").disabled = true;
 	}
 	if(cupcake.hp <= 0)
 	{
 		alert("You win!");
+		document.getElementById("execute").disabled = true;
 	}
-};
+}
