@@ -12,9 +12,9 @@ function init() {
   init_action_stage(stage);
   init_enemy_stage(stage);
   init_action_drop(stage);
-  for(i=0; i<3; i++){
+  /*for(i=0; i<3; i++){
       init_action_move(stage, stats["player"]["attack"][i], 365+(95*i+1), 420, "action_icon_"+(i+1));
-  }
+  }*/
   init_sprite(stage, "carrot_character", 150, 200);
   init_sprite(stage, "cupcake", 700,200);
   hp_display(stage, 100);
@@ -107,40 +107,6 @@ function init_action_move(stage, move, x, y, img_src){
       stage.addChild(dragger);
       stage.update();
   };
-
-  dragger.on("pressmove", function(event){
-    var neighbour, // what we want to snap to
-        dist, // The current distance to our snap partner
-        snapDistance=20; // How close to be to snap
-
-    for(var i=0, l=snappoints.length; i<1; i++)
-    {
-    var p = snappoints[l];
-    var diffX = Math.abs(event.stageX - 50);
-    var diffY = Math.abs(event.stageY - 50); 
-    var d = Math.sqrt(diffX*diffX + diffY*diffY);        
-    
-    // If the current point is closeEnough and the closest (so far)
-    // Then choose it to snap to.
-    var closest = (d<snapDistance && (dist == null || d < dist));
-    if (closest) {
-          neighbour = p; 
-        dist = d;
-    }
-  }
-
-    if (neighbour) {
-        dragger.x = neighbour.x;
-        dragger.y = neighbour.y;
-        
-    // Otherwise snap to the mouse
-    } else {
-        dragger.x = event.stageX;
-        dragger.y = event.stageY;
-    }
-
-    stage.update();
-  })
 }
 
   /////
@@ -163,27 +129,37 @@ function init_sprite(stage, filename,x,y){
   };
 }
 
-function event_display(stage, text_to_show){
-  var text = new createjs.Text(text_to_show, "20px Arial", "#000");
-  text.x = 500;
-  text.y = 150;
-}
-
-function hp_display(stage, hp_num){
-  var text = new createjs.Text("Hello World", "20px Arial", "#ff7700");
- text.x = 100;
- text.textBaseline = "alphabetic";
- stage.addChild(text);
- stage.update();
-}
-
-function run_moves(){
-
-}
 
 /////////////
 
 
 var clickHandler = function(){
-  alert('cliafafcked!');
+  var attack_chance = Math.floor((Math.random() * 2) + 1);
+  if(attack_chance == 2)
+   {
+	cupcake.hp -= 20;
+	alert("Hit! Cupcake is at " + cupcake.hp);
+   }
+  else
+   {
+	alert("Miss!");}
+
+   var hit_from_enemy = Math.floor((Math.random() * 2) + 1);
+
+   if(hit_from_enemy == 2){
+	carrot.hp -= 20;
+	alert("You got hit! You only have " + carrot.hp);
+}
+   else{
+	alert("Your enemy missed!");
+}
+
+	if(carrot.hp <= 0)
+	{
+		alert("You lost!");
+	}
+	if(cupcake.hp <= 0)
+	{
+		alert("You win!");
+	}
 };
