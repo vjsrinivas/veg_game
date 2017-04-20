@@ -11,7 +11,8 @@
     <body onload="init()">
         <div id="body">
             <canvas id="demoCanvas" width="1000" height="500"></canvas> 
-            <input type="button" id="execute" value="Execute!"></input> 
+            <input type="button" id="execute" value="Run Turn!"></input>
+            <input type="button" id="restart" value="Restart Game!"></input>
         </div> 
     </body>
 </html>

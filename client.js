@@ -3,171 +3,209 @@ var stats_raw = `{"player":{"attack":{"carrot":{"carrot_launch":{"max_dmg":50,"m
 var stats = JSON.parse(stats_raw);
 var current_moves = []
 var carrot = init_characters(100, stats["player"]["attack"]["carrot"]);
-var cupcake = init_characters(100,stats["enemy"]["attack"]);
+var cupcake = init_characters(100, stats["enemy"]["attack"]);
 var snappoints = []
+var lost;
 
 function init() {
-  stage = new createjs.Stage("demoCanvas");
-  init_background(stage);
-  init_action_stage(stage);
-  init_enemy_stage(stage);
-  init_action_drop(stage);
-  /*for(i=0; i<3; i++){
-      init_action_move(stage, stats["player"]["attack"][i], 365+(95*i+1), 420, "action_icon_"+(i+1));
-  }*/
-  init_sprite(stage, "carrot_character", 150, 200);
-  init_sprite(stage, "cupcake", 700,200);
-  hp_display(stage, 100);
+    stage = new createjs.Stage("demoCanvas");
+    init_background(stage);
+    init_action_stage(stage);
+    init_enemy_stage(stage);
+    init_action_drop(stage);
+    /*for(i=0; i<3; i++){
+        init_action_move(stage, stats["player"]["attack"][i], 365+(95*i+1), 420, "action_icon_"+(i+1));
+    }*/
+    carrot.meta = init_sprite(stage, "carrot_character", 150, 200);
+    cupcake.meta = init_sprite(stage, "cupcake", 700, 200);
 }
 
-function init_background(stage){
-  var elements = document.getElementsByTagName('input'); // All divs
-  for(var i = 0; i<elements.length; i++){
-    elements[i].onclick = clickHandler;
-  }
-  var img = new Image();
-  img.src = "./img/background.png";
-  var bitmap = new createjs.Bitmap(img);
-  img.onload = function() {
-      var image = event.target;
-      var bitmap = new createjs.Bitmap(image);
-      bitmap.x = 0;
-      bitmap.y = 0;
-      stage.addChild(bitmap);
-      stage.update();
-  };
+function init_background(stage) {
+    var elements = document.getElementById('execute'); // All divs
+    var elements2 = document.getElementById('restart');
+    elements.onclick = clickHandler;
+    elements2.onclick = restartHandler;
+    var img = new Image();
+    img.src = "./img/background.png";
+    var bitmap = new createjs.Bitmap(img);
+    img.onload = function() {
+        var image = event.target;
+        var bitmap = new createjs.Bitmap(image);
+        bitmap.x = 0;
+        bitmap.y = 0;
+        stage.addChild(bitmap);
+        stage.update();
+    };
 }
 
-function action_stage_visibility(event){
-  alert("hi!");
+function init_action_stage(stage) {
+    var img = new Image();
+    img.src = "./img/action_stage_bg.png";
+    var bitmap = new createjs.Bitmap(img);
+    img.onload = function() {
+        var image = event.target;
+        var bitmap = new createjs.Bitmap(image);
+        bitmap.x = 30;
+        bitmap.y = 30;
+        stage.addChild(bitmap);
+        stage.update();
+    };
+
+    for (var i = 0; i < 1; i++) {
+        var p = new createjs.Container();
+        p.x = 30;
+        p.y = 30;
+        snappoints.push(p);
+    }
 }
 
-function init_action_stage(stage){
-  var img = new Image();
-  img.src = "./img/action_stage_bg.png";
-  var bitmap = new createjs.Bitmap(img);
-  img.onload = function() {
-      var image = event.target;
-      var bitmap = new createjs.Bitmap(image);
-      bitmap.x = 30;
-      bitmap.y = 30;
-      stage.addChild(bitmap);
-      stage.update();
-  };
-
-  for(var i=0; i<1; i++){
-    var p = new createjs.Container();
-    p.x = 30;
-    p.y = 30;
-    snappoints.push(p);
-  }
+function init_enemy_stage(stage) {
+    var img = new Image();
+    img.src = "./img/action_stage_bg.png";
+    img.onload = function() {
+        var image = event.target;
+        var bitmap = new createjs.Bitmap(image);
+        bitmap.x = 670;
+        bitmap.y = 30;
+        stage.addChild(bitmap);
+        stage.update();
+    };
 }
 
-function init_enemy_stage(stage){
-  var img = new Image();
-  img.src = "./img/action_stage_bg.png";
-  img.onload = function() {
-      var image = event.target;
-      var bitmap = new createjs.Bitmap(image);
-      bitmap.x = 670;
-      bitmap.y = 30;
-      bitmap.alpha = 0.5;
-      stage.addChild(bitmap);
-      stage.update();
-  };
+function init_action_drop(stage) {
+    var img = new Image();
+    img.src = "./img/action_stage_bg.png";
+    img.onload = function() {
+        var image = event.target;
+        var bitmap = new createjs.Bitmap(image);
+        bitmap.x = 350;
+        bitmap.y = 420;
+        stage.addChild(bitmap);
+        stage.update();
+    };
 }
 
-function init_action_drop(stage){
-  var img = new Image();
-  img.src = "./img/action_stage_bg.png";
-  img.onload = function() {
-      var image = event.target;
-      var bitmap = new createjs.Bitmap(image);
-      bitmap.x = 350;
-      bitmap.y = 420;
-      stage.addChild(bitmap);
-      stage.update();
-  };
+function init_action_move(stage, move, x, y, img_src) {
+    var img = new Image();
+    img.src = "./img/" + img_src + ".png";
+    var dragger = new createjs.Container();
+    img.onload = function() {
+        var image = event.target;
+        var bitmap = new createjs.Bitmap(image);
+        //bitmap.x = 365;
+        //bitmap.y = 420;
+        //stage.addChild(bitmap);
+        //stage.update();
+        dragger.x = x
+        dragger.y = y;
+        dragger.addChild(bitmap);
+        stage.addChild(dragger);
+        stage.update();
+    };
 }
 
-function init_action_move(stage, move, x, y, img_src){
-  var img = new Image();
-  img.src = "./img/"+img_src+".png";
-  var dragger = new createjs.Container();
-  img.onload = function() {
-      var image = event.target;
-      var bitmap = new createjs.Bitmap(image);
-      //bitmap.x = 365;
-      //bitmap.y = 420;
-      //stage.addChild(bitmap);
-      //stage.update();
-      dragger.x = x
-      dragger.y = y;
-      dragger.addChild(bitmap);
-      stage.addChild(dragger);
-      stage.update();
-  };
+/////
+
+function init_characters(para_hp, moves) {
+    var character = {
+        hp: para_hp,
+        moves: moves,
+        meta: ["", 0, 0]
+    };
+    return character;
 }
 
-  /////
-
-function init_characters(para_hp, moves){
-  var character = {hp: para_hp, moves: moves};
-  return character;
-}
-
-function init_sprite(stage, filename,x,y){
-  var img = new Image();
-  img.src = "./img/"+ filename +".png";
-  img.onload = function() {
-      var image = event.target;
-      var bitmap = new createjs.Bitmap(image);
-      bitmap.x = x;
-      bitmap.y = y;
-      stage.addChild(bitmap);
-      stage.update();
-  };
+function init_sprite(stage, filename, x, y) {
+    var img = new Image();
+    img.src = "./img/" + filename + ".png";
+    var bitmap;
+    img.onload = function() {
+        var image = event.target;
+        bitmap = new createjs.Bitmap(image);
+        bitmap.x = x;
+        bitmap.y = y;
+        stage.addChild(bitmap);
+        stage.update();
+    };
+    return [filename, x, y];
 }
 
 
 /////////////
 
 
-var clickHandler = function(){
-  var attack_chance = Math.floor((Math.random() * 2) + 1);
-  if(attack_chance == 2)
-   {
-	cupcake.hp -= 20;
-	alert("Hit! Cupcake is at " + cupcake.hp);
-   }
-  else
-   {
-	alert("Miss!");}
+var clickHandler = function() {
+    var attack_chance = Math.floor((Math.random() * 2) + 1);
+    if (attack_chance == 2) {
+        cupcake.hp -= 20;
+        alert("Hit! Cupcake is at " + cupcake.hp + " HP");
+    } else {
+        alert("Miss!");
+    }
 
-   whowon();
+    var done = whowon();
 
-   var hit_from_enemy = Math.floor((Math.random() * 2) + 1);
+    if(done != 1){
+    var hit_from_enemy = Math.floor((Math.random() * 2) + 1);
 
-   if(hit_from_enemy == 2){
-	carrot.hp -= 20;
-	alert("You got hit! You only have " + carrot.hp);
-}
-   else{
-	alert("Your enemy missed!");
-}
-	whowon();
+    if (hit_from_enemy == 2) {
+        carrot.hp -= 20;
+        alert("You got hit! You only have " + carrot.hp + " HP");
+    } else {
+        alert("Your enemy missed!");
+    }
+  }
+
+    whowon();
 };
 
-function whowon(){
+function whowon() {
 
-if(carrot.hp <= 0)
-	{
-		alert("You lost!");
-		document.getElementById("execute").disabled = true;
-	}
-	if(cupcake.hp <= 0)
-	{
-		alert("You win!");
-		document.getElementById("execute").disabled = true;
-	}
+    if (carrot.hp <= 0) {
+        alert("You lost!");
+        document.getElementById("execute").disabled = true;
+        show_restart(carrot);
+        lost = carrot;
+        return 1;
+    }
+    if (cupcake.hp <= 0) {
+        alert("You win!");
+        document.getElementById("execute").disabled = true;
+        show_restart(cupcake);
+        lost = cupcake;
+        return 1;
+    }
+    return 0;
+}
+
+function show_restart(loser){
+    document.getElementById("restart").style.display = "inherit";
+    var img = new Image();
+    img.src = "./img/"+ loser.meta[0] + "_dead" +".png";
+    img.onload = function() {
+        var image = event.target;
+        var bitmap = new createjs.Bitmap(image);
+        bitmap.x = loser.meta[1];
+        bitmap.y = loser.meta[2];
+        stage.addChild(bitmap);
+        stage.update();
+    };
+
+}
+
+var restartHandler = function() {
+    carrot.hp = 100;
+    cupcake.hp = 100;
+    document.getElementById("execute").disabled = false;
+    document.getElementById("restart").style.display = "none";
+    var img = new Image();
+    img.src = "./img/"+ lost.meta[0] + ".png";
+    img.onload = function() {
+        var image = event.target;
+        var bitmap = new createjs.Bitmap(image);
+        bitmap.x = lost.meta[1];
+        bitmap.y = lost.meta[2];
+        stage.addChild(bitmap);
+        stage.update();
+    };
 }
